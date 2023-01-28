@@ -1,33 +1,33 @@
-spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/test
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: false
-
 #spring:
 #  datasource:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
-#    url: jdbc:mysql://team-m.cyabzp8jcj3s.ap-northeast-2.rds.amazonaws.com:3306/metamon?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul&createDatabaseIfNotExist=true
-#    username: sparcs
-#    password: QXrhmBhKKDrTHdF7Zzk3U3tx
+#    url: jdbc:h2:tcp://localhost/~/test
+#    username: sa
+#    password:
+#    driver-class-name: org.h2.Driver
 #  jpa:
-#    database: mysql   # 추가 해준 부분
-#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
 #    hibernate:
 #      ddl-auto: create
 #    properties:
 #      hibernate:
 #        show_sql: true
 #        format_sql: false
-#        default_batch_fetch_size: 1000
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://team-m.cyabzp8jcj3s.ap-northeast-2.rds.amazonaws.com:3306/metamon?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul&createDatabaseIfNotExist=true
+    username: sparcs
+    password: QXrhmBhKKDrTHdF7Zzk3U3tx
+  jpa:
+    database: mysql   # 추가 해준 부분
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect # 추가 해준 부분
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: false
+        default_batch_fetch_size: 1000
 
 jwt:
   expire-length : 3600000

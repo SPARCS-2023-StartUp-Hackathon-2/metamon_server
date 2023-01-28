@@ -34,7 +34,7 @@ dependencies {
 	// MySql
 	runtimeOnly 'mysql:mysql-connector-java'
 	// h2
-	runtimeOnly 'com.h2database:h2'
+//	runtimeOnly 'com.h2database:h2'
 	// MySql
 //	runtimeOnly 'mysql:mysql-connector-java'
 	// https://mvnrepository.com/artifact/com.google.zxing/core
