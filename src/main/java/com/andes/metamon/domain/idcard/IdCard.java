@@ -1,5 +1,6 @@
 package com.andes.metamon.domain.idcard;
 
+import com.andes.metamon.domain.common.BaseEntity;
 import com.andes.metamon.domain.user.User;
 import com.andes.metamon.service.idcard.dto.request.UploadRequestServiceIdCardDto;
 import lombok.AccessLevel;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "IDCARDS")
-public class IdCard {
+public class IdCard extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

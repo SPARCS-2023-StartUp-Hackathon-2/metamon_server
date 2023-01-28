@@ -35,7 +35,7 @@ public class UserService {
         idCardService.saveUserIdCard(user);
         // 토큰 발급
         String userAccessToken = jwtProvider.createAccessToken(user.getId());
-        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken);
+        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken, user.getCreated_at(), user.getUpdated_at());
     }
 
     public LoginUserDto login(LoginRequestServiceDto request) {
@@ -43,7 +43,7 @@ public class UserService {
         User user = validateUserEmailExists(request);
         validatePasswordMatch(request.getPassword(), user);
         String userAccessToken = jwtProvider.createAccessToken(user.getId());
-        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken);
+        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken, user.getCreated_at(), user.getUpdated_at());
     }
 
     public void validatePasswordMatch(String inputPassword, User user) {
@@ -67,6 +67,6 @@ public class UserService {
     }
     public UserInfoDto findUserById(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundUser());
-        return UserInfoDto.of(user.getId(), user.getName(), user.getEmail(), user.getBirth());
+        return UserInfoDto.of(user.getId(), user.getName(), user.getEmail(), user.getBirth(), user.getCreated_at(), user.getCreated_at());
     }
 }

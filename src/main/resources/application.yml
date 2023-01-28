@@ -30,7 +30,7 @@ spring:
         default_batch_fetch_size: 1000
 
 jwt:
-  expire-length : 3600000
+  expire-length : 86400000
   secret: "가나다라마바사아자차카타파하"
 
 logging:

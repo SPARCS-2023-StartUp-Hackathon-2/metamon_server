@@ -57,7 +57,8 @@ public class IdCardService {
         List<IdCard> idCards = idCardRepository.findAllByUserId(userId).orElseThrow(() -> new IllegalArgumentException("쿼리가 잘못되었다."));
         return idCards.stream()
                 .map(idCard -> ResponseIdCardDto.of(idCard.getId(), idCard.getNickname()
-                        , idCard.getPlatform().toString(),idCard.getQrImgUrl()
+                        , idCard.getPlatform().toString(),idCard.getQrImgUrl(),
+                        idCard.getCreated_at(), idCard.getUpdated_at()
                         ,idCard.getUserId().getId(),idCard.getUserId().getName(),
                         idCard.getUserId().getEmail(), idCard.getUserId().getBirth()))
                 .collect(Collectors.toList());
