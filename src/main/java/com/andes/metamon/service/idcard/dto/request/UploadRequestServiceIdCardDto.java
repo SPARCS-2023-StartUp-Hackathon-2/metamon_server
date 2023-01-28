@@ -6,6 +6,7 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Setter
 public class UploadRequestServiceIdCardDto {
     private String platform;
     private String nickname;

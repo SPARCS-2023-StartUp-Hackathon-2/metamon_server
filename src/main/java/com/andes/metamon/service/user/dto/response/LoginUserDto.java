@@ -9,15 +9,15 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginUserDto {
     private Long id;
-    private String name;
+    private String userName;
     private String email;
     private String token;
 
-    public static LoginUserDto of(Long id,String name, String email, String token) {
-        return new LoginUserDto(id, name, email, token);
+    public static LoginUserDto of(Long id,String userName, String email, String token) {
+        return new LoginUserDto(id, userName, email, token);
     }
 
-    public static LoginUserDto of(Long id,String name, String email) {
-        return new LoginUserDto(id, name, email, "");
+    public static LoginUserDto of(Long id,String userName, String email) {
+        return new LoginUserDto(id, userName, email, "");
     }
 }

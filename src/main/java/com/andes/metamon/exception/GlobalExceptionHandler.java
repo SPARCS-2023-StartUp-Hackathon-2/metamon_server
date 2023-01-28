@@ -1,6 +1,8 @@
 package com.andes.metamon.exception;
 
 import com.andes.metamon.exception.badRequest.*;
+import com.andes.metamon.exception.internelServer.MailPostErrorException;
+import com.andes.metamon.exception.internelServer.QrCodeUploadFail;
 import com.andes.metamon.exception.invalidToken.ExpiredToken;
 import com.andes.metamon.exception.invalidToken.InvalidTokenForm;
 import com.andes.metamon.exception.invalidToken.NotRequiredToken;
@@ -38,5 +40,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(NotRequiredToken.class)
     public ResponseEntity<BaseExceptionResponse> handleNotRequiredTokenException(final NotRequiredToken e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(BaseExceptionResponse.of(e));
+    }
+    @ExceptionHandler(QrCodeUploadFail.class)
+    public ResponseEntity<BaseExceptionResponse> handleQrCodeUploadFailException(final QrCodeUploadFail e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseExceptionResponse.of(e));
+    }
+    @ExceptionHandler(MailPostErrorException.class)
+    public ResponseEntity<BaseExceptionResponse> handleMailPostErrorException(final MailPostErrorException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseExceptionResponse.of(e));
     }
 }

@@ -1,10 +1,13 @@
 package com.andes.metamon.service.idcard;
 
+import com.andes.metamon.config.common.aws.AwsS3Uploader;
+import com.andes.metamon.config.common.mail.RegisterMail;
 import com.andes.metamon.domain.idcard.IdCard;
 import com.andes.metamon.domain.idcard.IdCardRepository;
 import com.andes.metamon.domain.user.User;
 import com.andes.metamon.domain.user.UserRepository;
 import com.andes.metamon.exception.badRequest.NotFoundUser;
+import com.andes.metamon.exception.internelServer.MailPostErrorException;
 import com.andes.metamon.service.idcard.dto.request.UploadRequestServiceIdCardDto;
 import com.andes.metamon.service.idcard.dto.response.ResponseIdCardDto;
 import com.andes.metamon.service.user.UserService;
@@ -19,15 +22,34 @@ import java.util.stream.Collectors;
 public class IdCardService {
     private final UserRepository userRepository;
     private final IdCardRepository idCardRepository;
+    private final AwsS3Uploader awsS3Uploader;
+    private final RegisterMail registerMail;
     // qr 이미지 업로드
     public void saveIdCard(Long userId, UploadRequestServiceIdCardDto request) {
         validdateUserIdExists(userId);
         User foundUser = findUserById(userId);
+
+        // qr code 생성 후 s3 전송
+        String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
+        request.setImgUrl(savedQrImgUrl);
+
+        // 신분증 이미지 전송
+        try {
+            registerMail.sendQRImgURl(savedQrImgUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MailPostErrorException();
+        }
+
         IdCard createdIdCard = IdCard.newInstance(request, foundUser);
+
         idCardRepository.save(createdIdCard);
     }
+
     public void saveUserIdCard(User userId) {
-        IdCard createdIdCard = IdCard.newInstance(userId);
+        // qr code 생성 후 s3 전송
+        String savedQrImgUrl = generateQrCodeAndSaveS3(userId.getId().toString(), userId.getName());
+        IdCard createdIdCard = IdCard.newInstance(userId, savedQrImgUrl);
         idCardRepository.save(createdIdCard);
     }
     public List<ResponseIdCardDto> findAllIdCard(Long userId) {
@@ -48,5 +70,11 @@ public class IdCardService {
         if (!userRepository.existsUserById(userId)) {
             throw new NotFoundUser();
         }
+    }
+
+    public String generateQrCodeAndSaveS3(String userId, String name) {
+        String fileName = awsS3Uploader.makeFileName(userId);
+        String text = awsS3Uploader.makeText(name);
+        return awsS3Uploader.uploadFileV1(text, fileName);
     }
 }

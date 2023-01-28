@@ -14,7 +14,10 @@ public enum BaseResponseStatusCode {
     TOKEN_INVALID_FORM(401, "잘못된 토큰 형식입니다."),
     TOKEN_HEADER_EMPTY(401, "헤더에 토큰이 포함되어 있지 않습니다."),
     TOKEN_EXPIRED(401,"토큰이 만료되었습니다."),
-    TOKEN_NOT_REQUIRED(401,"토큰이 필요없는 요청입니다.");
+    TOKEN_NOT_REQUIRED(401,"토큰이 필요없는 요청입니다."),
+    QRCODE_UPLOAD_S3_FAILED(500, "S3 업로드에 실패하였습니다."),
+    MAIL_POST_ERROR(500, "메일 전송에 실패하였습니다.");
+
 
 
     // 500

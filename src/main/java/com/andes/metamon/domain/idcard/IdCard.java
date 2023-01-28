@@ -38,9 +38,9 @@ public class IdCard {
     public static IdCard newInstance(String qrImgUrl, String nickname, Platform platform, User userId) {
         return new IdCard(qrImgUrl, nickname, platform, userId);
     }
-    public static IdCard newInstance(User userId) {
+    public static IdCard newInstance(User userId, String qrImgUrl) {
         // 사용자 qr 이미지는 바뀌어야 할지도?
-        return new IdCard("defalutImgUrl", null, Platform.USER, userId);
+        return new IdCard(qrImgUrl, null, Platform.USER, userId);
     }
     public static IdCard newInstance(UploadRequestServiceIdCardDto request, User userId) {
         IdCard newIdCard = new IdCard("defalutImgUrl", "defaultUser", Platform.ZEPETO, userId);

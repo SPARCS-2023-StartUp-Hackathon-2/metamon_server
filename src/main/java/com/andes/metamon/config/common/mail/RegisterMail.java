@@ -1,5 +1,6 @@
 package com.andes.metamon.config.common.mail;
 
+import com.andes.metamon.exception.internelServer.MailPostErrorException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +17,7 @@ import java.util.Random;
 public class RegisterMail implements MailService{
     private final JavaMailSender emailsender;
     private String ePw; // 인증번호
+    private static String ADMIN_EMAIL = "rkdauddh@naver.com";
 
     @Override
     public MimeMessage createMessage(String to) throws MessagingException, UnsupportedEncodingException {
@@ -41,6 +43,30 @@ public class RegisterMail implements MailService{
         msgg += "<div style='font-size:130%'>";
         msgg += "CODE : <strong>";
         msgg += ePw + "</strong><div><br/> "; // 메일에 인증번호 넣기
+        msgg += "</div>";
+        message.setText(msgg, "utf-8", "html");// 내용, charset 타입, subtype
+        // 보내는 사람의 이메일 주소, 보내는 사람 이름
+        message.setFrom(new InternetAddress("tkdgusis2@naver.com", "Metamon_Admin"));// 보내는 사람
+        return message;
+    }
+    public MimeMessage createMessageContainQRImgUrl(String to, String qrImgUrl) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = emailsender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, to);// 보내는 대상
+        message.setSubject("MetaMon 신분증 인증 메일");// 제목
+        String msgg = "";
+        msgg += "<div style='margin:100px;'>";
+        msgg += "<h1> 안녕하세요</h1>";
+        msgg += "<h1> 메타버스 통합 신분증 플랫폼 MetaMon 입니다</h1>";
+        msgg += "<br>";
+        msgg += "<p>아래에 첨부된 이미지 링크에 접속하여 팔로우를 해주세요<p>";
+        msgg += "<br>";
+        msgg += "<p>MetaMon과 함께 해주시는 여러분께 항상 감사드립니다.<p>";
+        msgg += "<br>";
+        msgg += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgg += "<h3 style='color:blue;'>이미지 링크입니다.</h3>";
+        msgg += "<div style='font-size:130%'>";
+        msgg += "CODE : <strong>";
+        msgg += qrImgUrl + "</strong><div><br/> "; // 메일에 인증번호 넣기
         msgg += "</div>";
         message.setText(msgg, "utf-8", "html");// 내용, charset 타입, subtype
         // 보내는 사람의 이메일 주소, 보내는 사람 이름
@@ -93,5 +119,14 @@ public class RegisterMail implements MailService{
             throw new IllegalArgumentException();
         }
         return ePw; // 메일로 보냈던 인증 코드를 서버로 반환
+    }
+    public void sendQRImgURl(String qrImgUrl) throws Exception {
+        MimeMessage message = createMessageContainQRImgUrl(ADMIN_EMAIL, qrImgUrl);
+        try {
+            emailsender.send(message);
+        } catch (MailException es) {
+            es.printStackTrace();
+            throw new MailPostErrorException();
+        }
     }
 }

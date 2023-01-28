@@ -17,7 +17,7 @@ import java.util.Base64;
 @Service
 public class QrCodeGenerator {
     // QR코드 이미지 생성
-    public static String getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
+    public static byte[] getQRCodeImage(String text, int width, int height) throws WriterException, IOException {
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(text, BarcodeFormat.QR_CODE, width,height);
 
@@ -25,6 +25,6 @@ public class QrCodeGenerator {
 
         MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
 
-        return Base64.getEncoder().encodeToString(pngOutputStream.toByteArray());
+        return pngOutputStream.toByteArray();
     }
 }

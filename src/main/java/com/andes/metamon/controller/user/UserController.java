@@ -42,17 +42,6 @@ public class UserController {
         UserInfoDto userInfo = userService.findUserById(requestMember.getId());
         return ResponseEntity.ok().body(new BaseResponse<UserInfoDto>(userInfo));
     }
-//    @GetMapping("/qr")
-//    public ResponseEntity<String> generateQrCode(@RequestParam String name) {
-//        String qrCodeImage = "";
-//        try {
-//            qrCodeImage = QrCodeGenerator.getQRCodeImage(name, 200, 200);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("e = " + e);
-//        }
-//        return ResponseEntity.ok().body(qrCodeImage);
-//    }
 
 
 
