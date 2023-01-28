@@ -29,17 +29,19 @@ public class IdCardService {
         validdateUserIdExists(userId);
         User foundUser = findUserById(userId);
 
-        // qr code 생성 후 s3 전송
-        String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
-        request.setImgUrl(savedQrImgUrl);
-
+        if (!request.getImgUrl().contains("https://sparcs-2023-startup-hackathon-m-1.s3.ap-northeast-2.amazonaws.com/example")) {
+            // qr code 생성 후 s3 전송
+            String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
+            request.setImgUrl(savedQrImgUrl);
+        }
         // 신분증 이미지 전송
         try {
-            registerMail.sendQRImgURl(savedQrImgUrl);
+            registerMail.sendQRImgURl(request.getImgUrl());
         } catch (Exception e) {
             e.printStackTrace();
             throw new MailPostErrorException();
         }
+
 
         IdCard createdIdCard = IdCard.newInstance(request, foundUser);
 
@@ -73,6 +75,11 @@ public class IdCardService {
         }
     }
 
+    public void validdateUserIdExists(Long userId) {
+        if (!userRepository.existsUserById(userId)) {
+            throw new NotFoundUser();
+        }
+    }
     public String generateQrCodeAndSaveS3(String userId, String name) {
         String fileName = awsS3Uploader.makeFileName(userId);
         String text = awsS3Uploader.makeText(name);
