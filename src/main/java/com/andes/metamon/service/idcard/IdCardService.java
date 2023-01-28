@@ -74,12 +74,6 @@ public class IdCardService {
             throw new NotFoundUser();
         }
     }
-
-    public void validdateUserIdExists(Long userId) {
-        if (!userRepository.existsUserById(userId)) {
-            throw new NotFoundUser();
-        }
-    }
     public String generateQrCodeAndSaveS3(String userId, String name) {
         String fileName = awsS3Uploader.makeFileName(userId);
         String text = awsS3Uploader.makeText(name);
