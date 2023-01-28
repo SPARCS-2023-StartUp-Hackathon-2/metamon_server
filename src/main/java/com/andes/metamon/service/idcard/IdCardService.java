@@ -36,7 +36,8 @@ public class IdCardService {
         return idCards.stream()
                 .map(idCard -> ResponseIdCardDto.of(idCard.getId(), idCard.getNickname()
                         , idCard.getPlatform().toString(),idCard.getQrImgUrl()
-                        ,idCard.getUserId().getId(),idCard.getUserId().getEmail(), idCard.getUserId().getBirth()))
+                        ,idCard.getUserId().getId(),idCard.getUserId().getName(),
+                        idCard.getUserId().getEmail(), idCard.getUserId().getBirth()))
                 .collect(Collectors.toList());
 
     }

@@ -10,6 +10,7 @@ import com.andes.metamon.service.idcard.IdCardService;
 import com.andes.metamon.service.user.dto.request.CreateUserServiceDto;
 import com.andes.metamon.service.user.dto.request.LoginRequestServiceDto;
 import com.andes.metamon.service.user.dto.response.LoginUserDto;
+import com.andes.metamon.service.user.dto.response.UserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,7 +65,8 @@ public class UserService {
     public User validateUserEmailExists(LoginRequestServiceDto request) {
         return userRepository.findUserByEmail(request.getEmail()).orElseThrow(() -> new NotFoundUser());
     }
-    public User findUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new NotFoundUser());
+    public UserInfoDto findUserById(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new NotFoundUser());
+        return UserInfoDto.of(user.getId(), user.getName(), user.getEmail(), user.getBirth());
     }
 }

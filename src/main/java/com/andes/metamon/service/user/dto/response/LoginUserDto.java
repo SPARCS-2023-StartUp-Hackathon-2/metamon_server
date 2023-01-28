@@ -4,6 +4,7 @@ import lombok.*;
 
 @ToString
 @Getter
+@Setter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoginUserDto {
@@ -14,5 +15,9 @@ public class LoginUserDto {
 
     public static LoginUserDto of(Long id,String name, String email, String token) {
         return new LoginUserDto(id, name, email, token);
+    }
+
+    public static LoginUserDto of(Long id,String name, String email) {
+        return new LoginUserDto(id, name, email, "");
     }
 }

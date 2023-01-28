@@ -13,10 +13,11 @@ public class ResponseIdCardDto {
     private String platform;
     private String qrImgUrl;
     private Long userId;
+    private String userName;
     private String userEmail;
     private String userBirth;
 
-    public static ResponseIdCardDto of(Long id, String nickname, String platform, String qrImgUrl, Long userId, String userEmail, String userBirth) {
-        return new ResponseIdCardDto(id, nickname, platform, qrImgUrl, userId, userEmail, userBirth);
+    public static ResponseIdCardDto of(Long id, String nickname, String platform, String qrImgUrl, Long userId, String userName, String userEmail, String userBirth) {
+        return new ResponseIdCardDto(id, nickname, platform, qrImgUrl, userId, userName, userEmail, userBirth);
     }
 }

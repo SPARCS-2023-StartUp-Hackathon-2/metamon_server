@@ -1,11 +1,15 @@
 package com.andes.metamon.controller.user;
 
+import com.andes.metamon.config.common.Login;
+import com.andes.metamon.config.common.VerifiedMember;
 import com.andes.metamon.config.common.qrcode.QrCodeGenerator;
+import com.andes.metamon.config.jwt.MemberPayload;
 import com.andes.metamon.controller.user.dto.request.LoginRequestUserDto;
 import com.andes.metamon.controller.user.dto.request.SignUpUserDto;
 import com.andes.metamon.exception.BaseResponse;
 import com.andes.metamon.service.user.UserService;
 import com.andes.metamon.service.user.dto.response.LoginUserDto;
+import com.andes.metamon.service.user.dto.response.UserInfoDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +36,14 @@ public class UserController {
         return ResponseEntity.ok().body(new BaseResponse<LoginUserDto>(loginUserDto));
     }
 
+    @GetMapping("/users/me")
+    @Login
+    public ResponseEntity<BaseResponse> findById(@VerifiedMember final MemberPayload requestMember) {
+        UserInfoDto userInfo = userService.findUserById(requestMember.getId());
+        return ResponseEntity.ok().body(new BaseResponse<UserInfoDto>(userInfo));
+    }
 //    @GetMapping("/qr")
-//    public ResponseEntity<String> generateQrCode(String name) {
+//    public ResponseEntity<String> generateQrCode(@RequestParam String name) {
 //        String qrCodeImage = "";
 //        try {
 //            qrCodeImage = QrCodeGenerator.getQRCodeImage(name, 200, 200);
