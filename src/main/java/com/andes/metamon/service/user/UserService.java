@@ -34,7 +34,7 @@ public class UserService {
         idCardService.saveUserIdCard(user);
         // 토큰 발급
         String userAccessToken = jwtProvider.createAccessToken(user.getId());
-        return LoginUserDto.of(user.getId(), user.getEmail(), userAccessToken);
+        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken);
     }
 
     public LoginUserDto login(LoginRequestServiceDto request) {
@@ -42,7 +42,7 @@ public class UserService {
         User user = validateUserEmailExists(request);
         validatePasswordMatch(request.getPassword(), user);
         String userAccessToken = jwtProvider.createAccessToken(user.getId());
-        return LoginUserDto.of(user.getId(), user.getEmail(), userAccessToken);
+        return LoginUserDto.of(user.getId(), user.getName(), user.getEmail(), userAccessToken);
     }
 
     public void validatePasswordMatch(String inputPassword, User user) {
