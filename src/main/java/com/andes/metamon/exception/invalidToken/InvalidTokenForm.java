@@ -1,4 +1,4 @@
-package com.andes.metamon.exception.badRequest;
+package com.andes.metamon.exception.invalidToken;
 
 import com.andes.metamon.exception.BaseResponseStatusCode;
 import com.andes.metamon.exception.CustomExcetion;

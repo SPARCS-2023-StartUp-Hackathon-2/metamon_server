@@ -1,6 +1,6 @@
 package com.andes.metamon.config.jwt;
 
-import com.andes.metamon.exception.badRequest.InvalidTokenForm;
+import com.andes.metamon.exception.invalidToken.InvalidTokenForm;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,6 +1,8 @@
 package com.andes.metamon.config.common;
 
 import com.andes.metamon.config.jwt.JwtProvider;
+import com.andes.metamon.exception.invalidToken.ExpiredToken;
+import com.andes.metamon.exception.invalidToken.NotRequiredToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -31,14 +33,14 @@ public class AuthInterceptor implements HandlerInterceptor {
     private void validateTokenRequired(Object handler) {
         Login auth = getLoginAnnotation(handler);
         if (auth != null && auth.required()) {
-            throw new IllegalArgumentException("토큰이 필요하지 않은 핸들러입니다.");
+            throw new NotRequiredToken();
         }
     }
 
     private void validateAuthorization(HttpServletRequest request) {
         final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (!jwtProvider.isValidToken(authorizationHeader)) {
-            throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
+            throw new ExpiredToken();
         }
     }
 
