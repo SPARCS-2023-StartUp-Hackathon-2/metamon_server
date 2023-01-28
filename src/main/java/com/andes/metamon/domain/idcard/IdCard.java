@@ -21,6 +21,8 @@ public class IdCard extends BaseEntity {
     @Column
     private String qrImgUrl;
     @Column
+    private String profileImgUrl;
+    @Column
     private String nickname;
     // enum
     @Enumerated(EnumType.STRING)
@@ -29,25 +31,26 @@ public class IdCard extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User userId;
 
-    private IdCard(String qrImgUrl, String nickname, Platform platform, User userId) {
+    public IdCard(String qrImgUrl, String profileImgUrl, String nickname, Platform platform, User userId) {
         this.qrImgUrl = qrImgUrl;
+        this.profileImgUrl = profileImgUrl;
         this.nickname = nickname;
         this.platform = platform;
         this.userId = userId;
     }
 
-    public static IdCard newInstance(String qrImgUrl, String nickname, Platform platform, User userId) {
-        return new IdCard(qrImgUrl, nickname, platform, userId);
+    public static IdCard newInstance(String qrImgUrl, String profileImgUrl, String nickname, Platform platform, User userId) {
+        return new IdCard(qrImgUrl,profileImgUrl, nickname, platform, userId);
     }
     public static IdCard newInstance(User userId, String qrImgUrl) {
         // 사용자 qr 이미지는 바뀌어야 할지도?
-        return new IdCard(qrImgUrl, null, Platform.USER, userId);
+        return new IdCard(qrImgUrl, null, null, Platform.USER, userId);
     }
     public static IdCard newInstance(UploadRequestServiceIdCardDto request, User userId) {
-        IdCard newIdCard = new IdCard("defalutImgUrl", "defaultUser", Platform.ZEPETO, userId);
+        IdCard newIdCard = new IdCard("defalutImgUrl",null, "defaultUser", Platform.ZEPETO, userId);
         // QR 이미지가 없을 경우, 기본 이미지로 설정 -> 변경되어야하는 값.
-        if (!request.getImgUrl().isBlank()) {
-            newIdCard.setUserIdCardQrImgUrl(request.getImgUrl());
+        if (!request.getQrImgUrl().isBlank()) {
+            newIdCard.setUserIdCardQrImgUrl(request.getQrImgUrl());
         }
         // 유저 닉네임이 없을 경우, 기본 이름으로 설정
         if (!request.getNickname().isBlank()) {
@@ -56,6 +59,9 @@ public class IdCard extends BaseEntity {
         // 신분증의 메타버스 플랫폼 값 설정
         if (!request.getPlatform().isBlank()) {
             newIdCard.setUserIdCardPlatform(request.getPlatform());
+        }
+        if (!request.getProfileImgUrl().isBlank()) {
+            newIdCard.setUserIdCardProfileImgUrl(request.getProfileImgUrl());
         }
         return newIdCard;
     }
@@ -69,6 +75,10 @@ public class IdCard extends BaseEntity {
 
     public void setUserIdCardQrImgUrl(String qrImgUrl) {
         this.qrImgUrl = qrImgUrl;
+    }
+
+    public void setUserIdCardProfileImgUrl(String profileImgUrl) {
+        this.profileImgUrl = profileImgUrl;
     }
     public void setUserIdCardNickname(String nickname) {
         this.nickname = nickname;

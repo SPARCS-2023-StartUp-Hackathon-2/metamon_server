@@ -10,9 +10,9 @@ import lombok.*;
 public class UploadRequestIdCardDto {
     private String platform;
     private String nickname;
-    private String imgUrl;
+    private String profileImgUrl;
 
     public UploadRequestServiceIdCardDto toServiceDto() {
-        return UploadRequestServiceIdCardDto.of(platform, nickname, imgUrl);
+        return UploadRequestServiceIdCardDto.of(platform, nickname, null, profileImgUrl);
     }
 }

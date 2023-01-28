@@ -10,9 +10,10 @@ import lombok.*;
 public class UploadRequestServiceIdCardDto {
     private String platform;
     private String nickname;
-    private String imgUrl;
+    private String qrImgUrl;
+    private String profileImgUrl;
 
-    public static UploadRequestServiceIdCardDto of(String platform, String nickname, String imgUrl) {
-        return new UploadRequestServiceIdCardDto(platform, nickname, imgUrl);
+    public static UploadRequestServiceIdCardDto of(String platform, String nickname, String qrImgUrl, String profileImgUrl) {
+        return new UploadRequestServiceIdCardDto(platform, nickname, qrImgUrl, profileImgUrl);
     }
 }

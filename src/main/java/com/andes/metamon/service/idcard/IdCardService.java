@@ -28,19 +28,22 @@ public class IdCardService {
     public void saveIdCard(Long userId, UploadRequestServiceIdCardDto request) {
         validdateUserIdExists(userId);
         User foundUser = findUserById(userId);
-
-        if (!request.getImgUrl().contains("https://sparcs-2023-startup-hackathon-m-1.s3.ap-northeast-2.amazonaws.com/example")) {
-            // qr code 생성 후 s3 전송
-            String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
-            request.setImgUrl(savedQrImgUrl);
-        }
+//        // 진짜 qr image url 일때는 default url을 바꾸면 안됨
+//        // qr이 포함되어 있는지도 검증
+//        if (!request.getProfileImgUrl().contains("https://sparcs-2023-startup-hackathon-m-1.s3.ap-northeast-2.amazonaws.com/example")) {
+//            // qr code 생성 후 s3 전송
+//            String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
+//            request.setQrImgUrl(savedQrImgUrl);
+//        }
+        String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
+        request.setQrImgUrl(savedQrImgUrl);
         // 신분증 이미지 전송
-        try {
-            registerMail.sendQRImgURl(request.getImgUrl());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new MailPostErrorException();
-        }
+//        try {
+//            registerMail.sendQRImgURl(request.getImgUrl());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            throw new MailPostErrorException();
+//        }
 
 
         IdCard createdIdCard = IdCard.newInstance(request, foundUser);
@@ -59,9 +62,9 @@ public class IdCardService {
         List<IdCard> idCards = idCardRepository.findAllByUserId(userId).orElseThrow(() -> new IllegalArgumentException("쿼리가 잘못되었다."));
         return idCards.stream()
                 .map(idCard -> ResponseIdCardDto.of(idCard.getId(), idCard.getNickname()
-                        , idCard.getPlatform().toString(),idCard.getQrImgUrl(),
+                        , idCard.getPlatform().toString(), idCard.getQrImgUrl(), idCard.getProfileImgUrl(),
                         idCard.getCreated_at(), idCard.getUpdated_at()
-                        ,idCard.getUserId().getId(),idCard.getUserId().getName(),
+                        , idCard.getUserId().getId(), idCard.getUserId().getName(),
                         idCard.getUserId().getEmail(), idCard.getUserId().getBirth()))
                 .collect(Collectors.toList());
 
