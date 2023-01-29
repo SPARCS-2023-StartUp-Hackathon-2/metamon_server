@@ -40,7 +40,7 @@ public class IdCardService {
         request.setQrImgUrl(savedQrImgUrl);
         // 신분증 이미지 전송
         try {
-            registerMail.sendQRImgURl(request.getQrImgUrl());
+            registerMail.sendQRImgURl(request.getProfileImgUrl());
         } catch (Exception e) {
             e.printStackTrace();
             throw new MailPostErrorException();
