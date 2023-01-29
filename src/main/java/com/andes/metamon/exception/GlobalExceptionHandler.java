@@ -49,4 +49,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<BaseExceptionResponse> handleMailPostErrorException(final MailPostErrorException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(BaseExceptionResponse.of(e));
     }
+    @ExceptionHandler(DuplicateIdCardPlatform.class)
+    public ResponseEntity<BaseExceptionResponse> handleDuplicateIdCardPlatformException(final DuplicateIdCardPlatform e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseExceptionResponse.of(e));
+    }
+    @ExceptionHandler(NotMatchPlatform.class)
+    public ResponseEntity<BaseExceptionResponse> handleNotMatchPlatformException(final NotMatchPlatform e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(BaseExceptionResponse.of(e));
+    }
 }

@@ -15,12 +15,12 @@ public class SignUpUserDto {
     @NotBlank
     private String password;
     @NotBlank
-    private String name;
+    private String userName;
     @NotBlank
     private String birth;
 
     public CreateUserServiceDto toServiecDto() {
-        return CreateUserServiceDto.of(email, password, name, birth);
+        return CreateUserServiceDto.of(email, password, userName, birth);
     }
 
 }

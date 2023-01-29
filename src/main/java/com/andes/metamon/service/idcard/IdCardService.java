@@ -4,8 +4,10 @@ import com.andes.metamon.config.common.aws.AwsS3Uploader;
 import com.andes.metamon.config.common.mail.RegisterMail;
 import com.andes.metamon.domain.idcard.IdCard;
 import com.andes.metamon.domain.idcard.IdCardRepository;
+import com.andes.metamon.domain.idcard.Platform;
 import com.andes.metamon.domain.user.User;
 import com.andes.metamon.domain.user.UserRepository;
+import com.andes.metamon.exception.badRequest.DuplicateIdCardPlatform;
 import com.andes.metamon.exception.badRequest.NotFoundUser;
 import com.andes.metamon.exception.internelServer.MailPostErrorException;
 import com.andes.metamon.service.idcard.dto.request.UploadRequestServiceIdCardDto;
@@ -28,26 +30,23 @@ public class IdCardService {
     public void saveIdCard(Long userId, UploadRequestServiceIdCardDto request) {
         validdateUserIdExists(userId);
         User foundUser = findUserById(userId);
+
+        // validate
+        validateDuplicatePlatform(foundUser, Platform.match(request.getPlatform()));
 //        // 진짜 qr image url 일때는 default url을 바꾸면 안됨
 //        // qr이 포함되어 있는지도 검증
-//        if (!request.getProfileImgUrl().contains("https://sparcs-2023-startup-hackathon-m-1.s3.ap-northeast-2.amazonaws.com/example")) {
-//            // qr code 생성 후 s3 전송
-//            String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
-//            request.setQrImgUrl(savedQrImgUrl);
-//        }
+
         String savedQrImgUrl = generateQrCodeAndSaveS3(foundUser.getId().toString(), request.getNickname());
         request.setQrImgUrl(savedQrImgUrl);
         // 신분증 이미지 전송
-//        try {
-//            registerMail.sendQRImgURl(request.getImgUrl());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            throw new MailPostErrorException();
-//        }
-
-
+        try {
+            registerMail.sendQRImgURl(request.getQrImgUrl());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new MailPostErrorException();
+        }
+        // 생성
         IdCard createdIdCard = IdCard.newInstance(request, foundUser);
-
         idCardRepository.save(createdIdCard);
     }
 
@@ -81,5 +80,11 @@ public class IdCardService {
         String fileName = awsS3Uploader.makeFileName(userId);
         String text = awsS3Uploader.makeText(name);
         return awsS3Uploader.uploadFileV1(text, fileName);
+    }
+
+    public void validateDuplicatePlatform(User userId, Platform platform) {
+        if (idCardRepository.existsIdCardByUserIdAndPlatform(userId, platform)) {
+            throw new DuplicateIdCardPlatform();
+        }
     }
 }

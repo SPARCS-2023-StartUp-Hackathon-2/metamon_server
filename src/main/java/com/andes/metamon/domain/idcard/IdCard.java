@@ -47,7 +47,7 @@ public class IdCard extends BaseEntity {
         return new IdCard(qrImgUrl, null, null, Platform.USER, userId);
     }
     public static IdCard newInstance(UploadRequestServiceIdCardDto request, User userId) {
-        IdCard newIdCard = new IdCard("defalutImgUrl",null, "defaultUser", Platform.ZEPETO, userId);
+        IdCard newIdCard = new IdCard("defalutImgUrl",null, "defaultUser", Platform.USER, userId);
         // QR 이미지가 없을 경우, 기본 이미지로 설정 -> 변경되어야하는 값.
         if (!request.getQrImgUrl().isBlank()) {
             newIdCard.setUserIdCardQrImgUrl(request.getQrImgUrl());
@@ -70,6 +70,9 @@ public class IdCard extends BaseEntity {
     private void setUserIdCardPlatform(String platform) {
         if (platform.equals("ZEPETO")) {
             this.platform = Platform.ZEPETO;
+        }
+        if (platform.equals("ROBLOX")) {
+            this.platform = Platform.ROBLOX;
         }
     }
 

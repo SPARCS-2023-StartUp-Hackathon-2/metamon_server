@@ -8,6 +8,8 @@ public enum BaseResponseStatusCode {
     SUCCESS(200, "OK"),
 
     // 400
+    NOT_MATCH_PLATFORM(400, "찾을 수 없는 플랫폼 입력입니다."),
+    IDCARD_DUPLICATE_PLATFORM(400, "동일한 플랫폼에 이미 등록된 신분증이 있습니다."),
     USER_NOT_FOUND(400, "유저 정보를 찾을 수 없습니다."),
     USER_PASSWORD_NOT_MATCH(400, "패스워드가 맞지 않습니다."),
     USER_EMAIL_DUPLICATE(400, "중복된 이메일입니다."),
